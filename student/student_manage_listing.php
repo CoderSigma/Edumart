@@ -15,7 +15,8 @@ if (!$conn) {
     die("<p class='alert alert-danger'>Database connection failed: " . mysqli_connect_error() . "</p>");
 }
 
-$query = "SELECT item_id, name, description, price, status FROM items WHERE user_id = ?";
+// Fetch items for the current user
+$query = "SELECT item_id, name, description, price, approved, status FROM items WHERE user_id = ?";
 $stmt = $conn->prepare($query);
 
 if (!$stmt) {
@@ -59,7 +60,7 @@ include '../components/student_sidebar.php';
                         <th>Name</th>
                         <th>Description</th>
                         <th>Price</th>
-                        <th>Status</th>
+                        <th>Approval Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -71,16 +72,20 @@ include '../components/student_sidebar.php';
                             <td><?= htmlspecialchars($row['description']) ?></td>
                             <td>$<?= number_format($row['price'], 2) ?></td>
                             <td>
-                                <span class="badge badge-<?= $row['status'] === 'sold' ? 'success' : 'warning' ?>">
-                                    <?= htmlspecialchars(ucfirst($row['status'])) ?>
-                                </span>
+                                <?php if ((int)$row['approved'] === 1): ?>
+                                    <span class="badge badge-success">Approved</span>
+                                <?php else: ?>
+                                    <span class="badge badge-warning">Pending</span>
+                                <?php endif; ?>
                             </td>
+                            
                             <td>
                                 <a href="edit_listing.php?id=<?= $row['item_id'] ?>" class="btn btn-warning btn-sm">Edit</a>
-                                <?php if ($row['status'] !== 'sold'): ?>
+
+                                <?php if ((int)$row['approved'] === 1): ?>
                                     <a href="mark_sold.php?id=<?= $row['item_id'] ?>" class="btn btn-success btn-sm" onclick="return confirm('Mark this item as sold?')">Mark as Sold</a>
                                 <?php else: ?>
-                                    <button class="btn btn-secondary btn-sm" disabled>Sold</button>
+                                    <button class="btn btn-secondary btn-sm" disabled>Mark as Sold</button>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -92,6 +97,5 @@ include '../components/student_sidebar.php';
         <?php endif; ?>
     </div>
     <?php include '../components/student_footer.php'; ?>
-
 </body>
 </html>
