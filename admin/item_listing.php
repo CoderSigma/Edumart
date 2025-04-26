@@ -17,7 +17,7 @@ function redirectTo($location) {
 // Approve item
 if (isset($_GET['approve'])) {
     $item_id = intval($_GET['approve']);
-    $stmt = $conn->prepare("UPDATE items SET approved = 1 WHERE item_id = ?");
+    $stmt = $conn->prepare("UPDATE items SET approved = 1, status = 'available' WHERE item_id = ?");
     if ($stmt) {
         $stmt->bind_param("i", $item_id);
         $stmt->execute();

@@ -70,7 +70,7 @@ include '../components/student_sidebar.php';
                             <td><?= htmlspecialchars($row['item_id']) ?></td>
                             <td><?= htmlspecialchars($row['name']) ?></td>
                             <td><?= htmlspecialchars($row['description']) ?></td>
-                            <td>$<?= number_format($row['price'], 2) ?></td>
+                            <td>₱<?= number_format($row['price'], 2) ?></td>
                             <td>
                                 <?php if ((int)$row['approved'] === 1): ?>
                                     <span class="badge badge-success">Approved</span>

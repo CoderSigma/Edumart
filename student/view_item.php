@@ -28,7 +28,7 @@ if (!$item) {
     die("Item not found.");
 }
 
-$uploadPath = "../uploads/";
+$uploadPath = "../";
 $images = explode(',', $item['images']); // Assuming images are stored as comma-separated values
 ?>
 
