@@ -173,3 +173,5 @@ include '../components/student_sidebar.php';
         document.getElementById('filterForm').submit();
     }
 </script>
+
+<br>
